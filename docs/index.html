@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentBadge — Free Badge for Agent ID Holders</title>
+<style>
+  :root { --gold:#f0b90b; --bg:#0b0f1a; --card:#121829; --text:#e8ecf3; --muted:#9aa4b2; --green:#2ebd85; --red:#f6465d; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; justify-content:center; }
+  .wrap { width:100%; max-width:640px; padding:32px 20px 64px; }
+  h1 { font-size:32px; margin:8px 0 4px; }
+  h1 span { color:var(--gold); }
+  p.sub { color:var(--muted); margin:0 0 24px; line-height:1.5; }
+  .card { background:var(--card); border:1px solid #232c45; border-radius:16px; padding:20px; margin-bottom:16px; }
+  .row { display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid #1e2740; }
+  .row:last-child { border-bottom:none; }
+  .label { color:var(--muted); }
+  .value { font-weight:600; text-align:right; word-break:break-all; }
+  .ok { color:var(--green); } .bad { color:var(--red); }
+  button { width:100%; padding:14px; font-size:17px; font-weight:700; border:none; border-radius:12px; background:var(--gold); color:#111; cursor:pointer; }
+  button:disabled { background:#2a3348; color:#7a8699; cursor:not-allowed; }
+  button.secondary { background:transparent; border:1px solid #33405e; color:var(--text); }
+  #status { margin-top:12px; font-size:14px; line-height:1.5; color:var(--muted); word-break:break-all; }
+  #status a { color:var(--gold); }
+  #badgeImg { display:block; width:256px; height:256px; margin:16px auto 0; border-radius:16px; }
+  .notice { background:#2a2103; border:1px solid #6b5410; color:#ffd76a; border-radius:12px; padding:12px 14px; font-size:14px; line-height:1.5; margin-bottom:16px; }
+  .fine { font-size:13px; color:var(--muted); line-height:1.6; }
+  code { background:#1a2138; padding:2px 6px; border-radius:6px; font-size:13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Agent<span>Badge</span></h1>
+  <p class="sub">A free badge NFT for Binance Agent ID holders. One badge per wallet, gas only.
+  Your Agent ID is checked on-chain — no sign-up, no server, no data collected.</p>
+
+  <div id="deployNotice" class="notice" style="display:none">
+    This demo build has no contract address set yet. After deployment, set
+    <code>CONTRACT_ADDRESS</code> in <code>app.js</code>.
+  </div>
+
+  <div class="card">
+    <div class="row"><span class="label">Wallet</span><span class="value" id="wallet">Not connected</span></div>
+    <div class="row"><span class="label">Network</span><span class="value" id="network">—</span></div>
+    <div class="row"><span class="label">Holds an Agent ID</span><span class="value" id="agentId">—</span></div>
+    <div class="row"><span class="label">Badge minted</span><span class="value" id="minted">—</span></div>
+    <div class="row"><span class="label">Total badges minted</span><span class="value" id="supply">—</span></div>
+  </div>
+
+  <button id="connectBtn">Connect Wallet</button>
+  <div style="height:12px"></div>
+  <button id="mintBtn" disabled>Mint my free badge</button>
+  <div id="status"></div>
+  <img id="badgeImg" style="display:none" alt="Your AgentBadge">
+
+  <p class="fine" style="margin-top:28px">
+    How it works: the AgentBadge contract calls <code>balanceOf</code> on the Agent ID registry
+    (<code>0x60B9…022F</code>) to prove you hold an Agent ID, then mints exactly one badge to your wallet.
+    Minting is free apart from BSC gas (~0.000005 BNB at 0.05 gwei). The mint transaction is sent only
+    when you click the button and confirm it in your own wallet — nothing is ever auto-signed and no
+    token approvals are requested. Contract source is open and verifiable on BscScan.
+  </p>
+</div>
+
+<script src="./ethers.umd.min.js"></script>
+<script src="./abi.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
